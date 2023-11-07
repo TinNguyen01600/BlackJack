@@ -40,6 +40,10 @@ class Hand:
         for i in self.cards:
             print(i, end=' ')
         print(']')
+    def calculate_value(self):
+        for i in self.cards:
+            self.value += values[i.rank]
+        return self.value
         
 class Player(Hand):
     def __init__(self):
@@ -59,6 +63,13 @@ class Player(Hand):
         return result
     def __str__(self):
         return f'{self.name} has {self.chips} chips.'
+    def place_bet(self):
+        self.bet = self.get_integer(f'Player {self.name} bets: ')
+        if self.bet > self.chips:
+            print('Not enough chips.')
+            self.place_bet()
+        else:
+            self.chips -= self.bet
     
 class Dealer(Hand):
     def show_1_card(self):
@@ -67,5 +78,10 @@ class Dealer(Hand):
 if __name__ == '__main__': 
     new_deck = Deck()
     dealer = Dealer()
-    dealer.add_card(new_deck.deal_one())
-    dealer.show_1_card()
+    p1 = Player()
+    p1.place_bet()
+    for _ in range(2):
+        p1.add_card(new_deck.deal_one())
+        dealer.add_card(new_deck.deal_one())
+    print(p1, p1.bet, p1.value)
+    print(dealer.value)
