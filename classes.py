@@ -20,7 +20,7 @@ class Deck:
                 c = Card(suit, rank)
                 self.deck.append(c)
     def __str__(self):
-        for i in self.deck:
+        for i in range(-10, 0, 1):
             print(i)
         return ''
     def shuffle(self):
@@ -36,7 +36,7 @@ class Hand:
     def add_card(self, new_card):
         self.cards.append(new_card)
     def show_all_cards(self):
-        print('[', end='')
+        print('[ ', end='')
         for i in self.cards:
             print(i, end=' ')
         print(']')
@@ -46,6 +46,7 @@ class Player(Hand):
         super().__init__()
         self.name = input('Enter your name: ')
         self.chips = self.get_integer('Buy in: ')
+    @staticmethod
     def get_integer(text):
         while True:
             try:
@@ -58,7 +59,13 @@ class Player(Hand):
         return result
     def __str__(self):
         return f'{self.name} has {self.chips} chips.'
+    
+class Dealer(Hand):
+    def show_1_card(self):
+        print('[ Hole card, ', self.cards[1], ']')
 
 if __name__ == '__main__': 
-    player1 = Player()
-    print(player1)
+    new_deck = Deck()
+    dealer = Dealer()
+    dealer.add_card(new_deck.deal_one())
+    dealer.show_1_card()
