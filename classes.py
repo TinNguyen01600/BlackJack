@@ -28,8 +28,37 @@ class Deck:
     def deal_one(self):
         return self.deck.pop()  # deal the last (top) card of the deck to player
 
+class Hand:
+    def __init__(self):
+        self.cards = []
+        self.value = 0
+        self.aces = 0
+    def add_card(self, new_card):
+        self.cards.append(new_card)
+    def show_all_cards(self):
+        print('[', end='')
+        for i in self.cards:
+            print(i, end=' ')
+        print(']')
+        
+class Player(Hand):
+    def __init__(self):
+        super().__init__()
+        self.name = input('Enter your name: ')
+        self.chips = self.get_integer('Buy in: ')
+    def get_integer(text):
+        while True:
+            try:
+                result = int(input(text))
+            except:
+                print('Not a number. Try again')
+                continue
+            else:
+                break
+        return result
+    def __str__(self):
+        return f'{self.name} has {self.chips} chips.'
+
 if __name__ == '__main__': 
-    new_deck = Deck()
-    print(new_deck)
-    new_deck.shuffle()
-    print(new_deck)
+    player1 = Player()
+    print(player1)
