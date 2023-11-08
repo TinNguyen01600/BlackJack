@@ -21,13 +21,13 @@ class Deck:
                 self.deck.append(c)
     def __str__(self):
         for i in range(-10, 0, 1):
-            print(i)
+            print(self.deck[i])
         return ''
     def shuffle(self):
         random.shuffle(self.deck)
     def deal_one(self):
         return self.deck.pop()  # deal the last (top) card of the deck to player
-
+        
 class Hand:
     def __init__(self):
         self.cards = []
@@ -36,15 +36,15 @@ class Hand:
     def add_card(self, new_card):
         self.cards.append(new_card)
     def show_all_cards(self):
-        print('[ ', end='')
+        print('[', end='')
         for i in self.cards:
-            print(i, end=' ')
+            print(i, end='|')
         print(']')
     def calculate_value(self):
         for i in self.cards:
             self.value += values[i.rank]
         return self.value
-        
+
 class Player(Hand):
     def __init__(self):
         super().__init__()
@@ -57,7 +57,7 @@ class Player(Hand):
                 result = int(input(text))
             except:
                 print('Not a number. Try again')
-                continue
+                continue         
             else:
                 break
         return result
@@ -70,10 +70,10 @@ class Player(Hand):
             self.place_bet()
         else:
             self.chips -= self.bet
-    
+
 class Dealer(Hand):
     def show_1_card(self):
-        print('[ Hole card, ', self.cards[1], ']')
+        print('[ Hole card | ', self.cards[1], ']')
 
 if __name__ == '__main__': 
     new_deck = Deck()
