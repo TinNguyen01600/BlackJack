@@ -36,9 +36,9 @@ class Hand:
     def add_card(self, new_card):
         self.cards.append(new_card)
     def show_all_cards(self):
-        print('[', end='')
+        print('[ ', end='')
         for i in self.cards:
-            print(i, end='|')
+            print(i, end='| ')
         print(']')
     def calculate_value(self):
         for i in self.cards:
