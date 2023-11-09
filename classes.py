@@ -32,7 +32,7 @@ class Hand:
     def __init__(self):
         self.cards = []
         self._value = 0
-        self.aces = 0
+        self._aces = False
     def add_card(self, new_card):
         self.cards.append(new_card)
     def show_all_cards(self):
@@ -43,10 +43,17 @@ class Hand:
     @property
     def value(self):
         return self.calculate_value()
+    @property
+    def aces(self):
+        num = 0
+        for i in self.cards:
+            if i.rank == 'Ace': num += 1
+        return num
     def calculate_value(self):
         val = 0
         for i in self.cards:
             val += values[i.rank]
+        if val > 21 and self.aces > 0:  val -= 10
         return val
 
 class Player(Hand):
@@ -66,7 +73,12 @@ class Player(Hand):
                 break
         return result
     def __str__(self):
-        return f'{self.name} has {self.chips} chips.'
+        string = f'Player {self.name} has {self.chips} chips. '
+        string += f'His cards [ '
+        for i in self.cards:
+            string += f'{i}| '
+        string += ']'
+        return string
     def place_bet(self):
         self.bet = self.get_integer(f'Player {self.name} bets: ')
         if self.bet > self.chips:
@@ -81,11 +93,10 @@ class Dealer(Hand):
 
 if __name__ == '__main__': 
     new_deck = Deck()
-    dealer = Dealer()
+    new_deck.shuffle()
+    
     p1 = Player()
-    p1.place_bet()
     for _ in range(2):
         p1.add_card(new_deck.deal_one())
-        dealer.add_card(new_deck.deal_one())
-    print(p1, p1.bet, p1.value)
-    print(dealer.value)
+    print(p1)
+    print(p1.aces)
