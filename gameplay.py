@@ -50,19 +50,23 @@ def get_player_choice(p):
     return choice
 
 def player_turn(player, choice, deck):
-    if choice == 1: # Hit
-        player.add_card(deck.deal_one())
-        print_player_infor(player)
-        if player.value > 21:
-            print(f'Player {player.name} busting')
-        else:
-            player_turn(player, get_player_choice(i), deck)
-    elif choice == 2:   # Stand
-        pass
-    elif choice == 3:   # Double down
-        pass
-    elif choice == 4:   # Split (only with same rank cards )
-        pass
+    if player.value == 21:
+        print('You got blackjack.')
+    else:
+        choice = get_player_choice(player)
+        if choice == 1: # Hit
+            player.add_card(deck.deal_one())
+            print_player_infor(player)
+            if player.value > 21:
+                print(f'Player {player.name} busting')
+            else:
+                player_turn(player, get_player_choice(player), deck)
+        elif choice == 2:   # Stand
+            pass
+        elif choice == 3:   # Double down
+            pass
+        elif choice == 4:   # Split (only with same rank cards )
+            pass
 
 if __name__ == '__main__':
     deck = set_up_deck()

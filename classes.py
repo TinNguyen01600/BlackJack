@@ -31,7 +31,7 @@ class Deck:
 class Hand:
     def __init__(self):
         self.cards = []
-        self.value = 0
+        self._value = 0
         self.aces = 0
     def add_card(self, new_card):
         self.cards.append(new_card)
@@ -40,10 +40,14 @@ class Hand:
         for i in self.cards:
             print(i, end='| ')
         print(']')
+    @property
+    def value(self):
+        return self.calculate_value()
     def calculate_value(self):
+        val = 0
         for i in self.cards:
-            self.value += values[i.rank]
-        return self.value
+            val += values[i.rank]
+        return val
 
 class Player(Hand):
     def __init__(self):
