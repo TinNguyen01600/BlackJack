@@ -32,7 +32,7 @@ class Hand:
     def __init__(self):
         self.cards = []
         self._value = 0
-        self._aces = False
+        self._aces = 0
     def add_card(self, new_card):
         self.cards.append(new_card)
     def show_all_cards(self):

@@ -4,6 +4,7 @@ This file contains stage functions in a BlackJack round
 
 import classes
 import os
+import time
 
 def set_up_deck():
     new_deck = classes.Deck()
@@ -26,15 +27,13 @@ def set_up_bet(players_list):
 
 def dealing(players_list, deck, dealer):
     num_of_players = len(players_list)
+    print('Dealing')
+    for _ in range(3):
+        time.sleep(0.4), print('.')
     for _ in range(2):
         for i in range(num_of_players):
             players_list[i].add_card(deck.deal_one())
-        dealer.add_card(deck.deal_one())
-        
-def print_player_infor(p):
-    print(f'Player {p.name} bets {p.bet} chips.')
-    print(f'Player {p.name}\'s cards ', end='')
-    i.show_all_cards()
+        dealer.add_card(deck.deal_one())      
 
 def get_player_choice(p):
     possible_choices = ['Hit', 'Stand', 'Double Down']
@@ -50,14 +49,16 @@ def get_player_choice(p):
     return choice
 
 def player_turn(player, deck):
+    print(f'Player {player.name}\'s turn. Your cards ', end='')
+    player.show_all_cards()
     if player.value == 21:
         print('You got blackjack.')
     else:
         choice = get_player_choice(player)
         if choice == 1: # Hit
             player.add_card(deck.deal_one())
-            print_player_infor(player)
             if player.value > 21:
+                player.show_all_cards()
                 print(f'Player {player.name} busting')
             else:
                 player_turn(player, deck)
@@ -69,23 +70,27 @@ def player_turn(player, deck):
             pass
 
 if __name__ == '__main__':
+    # Setting up deck, players and dealer
     deck = set_up_deck()
     players_list = set_up_players([])
     dealer = classes.Dealer()
     
+    # Placing players' bets and dealing cards
     os.system('cls')
     set_up_bet(players_list)
     dealing(players_list, deck, dealer)
     
+    # Displaying players' and dealer's cards
     print('Dealer\'s cards ', end='')
     dealer.show_1_card()
     for i in players_list:
-        print()
-        print_player_infor(i)
+        print(f'Player {i.name}\'s cards ', end='')
+        i.show_all_cards()
     
+    # Each player's turn and decision
     for i in players_list:
         print()
-        print(f'Player {i.name}\'s turn.', end=' ')
-        i.show_all_cards()
         player_turn(i, deck)
+    
+    # Dealer's turn and reveal their cards
     
