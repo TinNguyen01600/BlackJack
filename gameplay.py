@@ -49,7 +49,7 @@ def get_player_choice(p):
         choice = classes.Player.get_integer('Enter your choice: ')
     return choice
 
-def player_turn(player, choice, deck):
+def player_turn(player, deck):
     if player.value == 21:
         print('You got blackjack.')
     else:
@@ -60,7 +60,7 @@ def player_turn(player, choice, deck):
             if player.value > 21:
                 print(f'Player {player.name} busting')
             else:
-                player_turn(player, get_player_choice(player), deck)
+                player_turn(player, deck)
         elif choice == 2:   # Stand
             pass
         elif choice == 3:   # Double down
@@ -73,18 +73,19 @@ if __name__ == '__main__':
     players_list = set_up_players([])
     dealer = classes.Dealer()
     
+    os.system('cls')
     set_up_bet(players_list)
     dealing(players_list, deck, dealer)
     
-    os.system('cls')
     print('Dealer\'s cards ', end='')
     dealer.show_1_card()
-    print()
     for i in players_list:
-        print_player_infor(i)
         print()
+        print_player_infor(i)
     
     for i in players_list:
-        print(f'Player {i.name}\'s turn.')
-        player_turn(i, get_player_choice(i), deck)
+        print()
+        print(f'Player {i.name}\'s turn.', end=' ')
+        i.show_all_cards()
+        player_turn(i, deck)
     
