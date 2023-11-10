@@ -52,6 +52,7 @@ def player_turn(player, deck):
     player.show_all_cards()
     if player.value == 21:
         print('You got blackjack.')
+        player.blackjack = True
     else:
         choice = get_player_choice(player)
         if choice == 1: # Hit
@@ -71,12 +72,38 @@ def player_turn(player, deck):
 def dealer_turn(dealer, deck):
     print('Dealer\'s cards ', end='')
     dealer.show_all_cards()
-    if dealer.value == 21:  print('Dealer got blackjack.')
+    if dealer.value == 21:  
+        print('Dealer got blackjack.')
+        dealer.blackjack = True
     elif dealer.value <= 16:
         print('Dealer hits 1 card.')
         dealer.add_card(deck.deal_one())
         dealer_turn(dealer, deck)
     else: print('Dealer stands.')
+
+def payout(players_list, dealer):
+    print('Dealer\'s cards ', end='')
+    dealer.show_all_cards()
+    dealer_val = dealer.value
+    for player in players_list:
+        print()
+        print(f'Player {player.name}\'s cards ', end='')
+        player.show_all_cards()
+        
+        if player.value > 21:   # Player busted
+            print(f'You lost your bet ({player.bet} chips).')
+        elif player.blackjack:  
+            if dealer.blackjack:
+                print('Dealer and Player pushed. The bet is returned')
+                player.chips += (player.bet)
+            else:
+                print(f'You win your bet ({player.bet} chips) and profit ({player.bet/2} chips).')
+                player.chips += (2*(player.bet) + player.bet/2)
+        else:
+            if dealer_val > 21: # Dealer busted and Player not blusted
+                print(f'You win your bet ({player.bet} chips).')
+                player.chips += 2*(player.bet)
+        print(player.chips)
 
 if __name__ == '__main__':
     # Setting up deck, players and dealer
@@ -115,12 +142,6 @@ if __name__ == '__main__':
     
     # Determination of Winners, Paying and Collecting Bets
     os.system('cls')
-    print('Dealer\'s cards ', end='')
-    dealer.show_all_cards()
-    for i in players_list:
-        print()
-        print(f'Player {i.name}\'s cards ', end='')
-        i.show_all_cards()
-        if i.value > 21:
-            print(f'You lost your bet ({i.bet} chips).')
+    payout(players_list, dealer)
+    input('Press Enter to continue...')
     

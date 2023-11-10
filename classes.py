@@ -33,6 +33,7 @@ class Hand:
         self.cards = []
         self._value = 0
         self._aces = 0
+        self.blackjack = False
     def add_card(self, new_card):
         self.cards.append(new_card)
     def show_all_cards(self):
