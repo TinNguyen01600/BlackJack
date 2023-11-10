@@ -51,8 +51,10 @@ def get_player_choice(p):
 def player_turn(player, deck):
     player.show_all_cards()
     if player.value == 21:
-        print('You got blackjack.')
-        player.blackjack = True
+        if len(player.cards) == 2:
+            print('You got blackjack.')
+            player.blackjack = True
+        else:   print('You got 21.')
     else:
         choice = get_player_choice(player)
         if choice == 1: # Hit
@@ -73,8 +75,10 @@ def dealer_turn(dealer, deck):
     print('Dealer\'s cards ', end='')
     dealer.show_all_cards()
     if dealer.value == 21:  
-        print('Dealer got blackjack.')
-        dealer.blackjack = True
+        if len(dealer.cards) == 2:
+            print('Dealer got blackjack.')
+            dealer.blackjack = True
+        else:   print('Dealer got 21.')
     elif dealer.value <= 16:
         print('Dealer hits 1 card.')
         dealer.add_card(deck.deal_one())
@@ -89,20 +93,34 @@ def payout(players_list, dealer):
         print()
         print(f'Player {player.name}\'s cards ', end='')
         player.show_all_cards()
+        player_val = player.value
         
-        if player.value > 21:   # Player busted
+        if player_val > 21:   # Player busted
             print(f'You lost your bet ({player.bet} chips).')
         elif player.blackjack:  
             if dealer.blackjack:
                 print('Dealer and Player pushed. The bet is returned')
                 player.chips += (player.bet)
             else:
-                print(f'You win your bet ({player.bet} chips) and profit ({player.bet/2} chips).')
+                if player % 2 == 0: profit = int(player/2)
+                else:   profit = player/2
+                print(f'You win your bet ({player.bet} chips) and profit ({profit} chips).')
                 player.chips += (2*(player.bet) + player.bet/2)
         else:
-            if dealer_val > 21: # Dealer busted and Player not blusted
+            if dealer_val > 21: # Dealer busted (>21) and Player not busted (<21)
                 print(f'You win your bet ({player.bet} chips).')
                 player.chips += 2*(player.bet)
+            elif dealer.blackjack:
+                print(f'You lost your bet ({player.bet} chips).')
+            else:
+                if player_val > dealer_val:
+                    print(f'You win your bet ({player.bet} chips).')
+                    player.chips += 2*(player.bet)
+                elif player_val == dealer_val:
+                    print('Dealer and Player pushed. The bet is returned')
+                    player.chips += (player.bet)
+                else:
+                    print(f'You lost your bet ({player.bet} chips).')
         print(player.chips)
 
 if __name__ == '__main__':
