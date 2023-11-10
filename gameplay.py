@@ -49,7 +49,6 @@ def get_player_choice(p):
     return choice
 
 def player_turn(player, deck):
-    print(f'Player {player.name}\'s turn. Your cards ', end='')
     player.show_all_cards()
     if player.value == 21:
         print('You got blackjack.')
@@ -69,6 +68,16 @@ def player_turn(player, deck):
         elif choice == 4:   # Split (only with same rank cards )
             pass
 
+def dealer_turn(dealer, deck):
+    print('Dealer\'s cards ', end='')
+    dealer.show_all_cards()
+    if dealer.value == 21:  print('Dealer got blackjack.')
+    elif dealer.value <= 16:
+        print('Dealer hits 1 card.')
+        dealer.add_card(deck.deal_one())
+        dealer_turn(dealer, deck)
+    else: print('Dealer stands.')
+
 if __name__ == '__main__':
     # Setting up deck, players and dealer
     deck = set_up_deck()
@@ -77,6 +86,10 @@ if __name__ == '__main__':
     
     # Placing players' bets and dealing cards
     os.system('cls')
+    print('New round.')
+    for i in players_list:
+        print(f'Player {i.name} has {i.chips} chips.')
+    print()
     set_up_bet(players_list)
     dealing(players_list, deck, dealer)
     
@@ -90,7 +103,24 @@ if __name__ == '__main__':
     # Each player's turn and decision
     for i in players_list:
         print()
+        print(f'Player {i.name}\'s turn. Your cards ', end='')
         player_turn(i, deck)
+    input('Press Enter to continue...')
     
     # Dealer's turn and reveal their cards
+    os.system('cls')
+    print('Dealer\'s turn.')
+    dealer_turn(dealer, deck)
+    input('Press Enter to continue...')
+    
+    # Determination of Winners, Paying and Collecting Bets
+    os.system('cls')
+    print('Dealer\'s cards ', end='')
+    dealer.show_all_cards()
+    for i in players_list:
+        print()
+        print(f'Player {i.name}\'s cards ', end='')
+        i.show_all_cards()
+        if i.value > 21:
+            print(f'You lost your bet ({i.bet} chips).')
     
