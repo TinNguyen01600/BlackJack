@@ -95,33 +95,32 @@ def payout(players_list, dealer):
         player.show_all_cards()
         player_val = player.value
         
-        if player_val > 21:   # Player busted
-            print(f'You lost your bet ({player.bet} chips).')
+        if player_val > 21:   
+            print('Player busted.', end='')
+            player.lose_bet()
         elif player.blackjack:  
-            if dealer.blackjack:
-                print('Dealer and Player pushed. The bet is returned')
-                player.chips += (player.bet)
+            if dealer.blackjack:  print('Dealer and Player pushed. The bet is returned')
             else:
-                if player % 2 == 0: profit = int(player/2)
-                else:   profit = player/2
-                print(f'You win your bet ({player.bet} chips) and profit ({profit} chips).')
-                player.chips += (2*(player.bet) + player.bet/2)
+                print('Player got blackjack.', end='')
+                if player.bet % 2 == 0: profit = int(player.bet/2)
+                else:   profit = player.bet/2
+                player.win_bet(player.bet + profit)
         else:
-            if dealer_val > 21: # Dealer busted (>21) and Player not busted (<21)
-                print(f'You win your bet ({player.bet} chips).')
-                player.chips += 2*(player.bet)
-            elif dealer.blackjack:
-                print(f'You lost your bet ({player.bet} chips).')
+            if dealer_val > 21:
+                print('Dealer busted.', end='')
+                player.win_bet(player.bet)
+            elif dealer.blackjack:  
+                print('Dealer got blackjack.', end='')
+                player.lose_bet()
             else:
                 if player_val > dealer_val:
-                    print(f'You win your bet ({player.bet} chips).')
-                    player.chips += 2*(player.bet)
-                elif player_val == dealer_val:
-                    print('Dealer and Player pushed. The bet is returned')
-                    player.chips += (player.bet)
-                else:
-                    print(f'You lost your bet ({player.bet} chips).')
-        print(player.chips)
+                    print('Player is closer to 21.', end='')
+                    player.win_bet(player.bet)
+                elif player_val == dealer_val:  print('Dealer and Player pushed. The bet is returned')
+                else:   
+                    print('Dealer is closer to 21.', end='')
+                    player.lose_bet()
+        print(player)
 
 if __name__ == '__main__':
     # Setting up deck, players and dealer

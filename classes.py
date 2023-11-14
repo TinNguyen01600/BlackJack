@@ -75,18 +75,18 @@ class Player(Hand):
         return result
     def __str__(self):
         string = f'Player {self.name} has {self.chips} chips. '
-        string += f'His cards [ '
-        for i in self.cards:
-            string += f'{i}| '
-        string += ']'
         return string
     def place_bet(self):
         self.bet = self.get_integer(f'Player {self.name} bets: ')
         if self.bet > self.chips:
             print('Not enough chips.')
             self.place_bet()
-        else:
-            self.chips -= self.bet
+    def win_bet(self, win):
+        print(f'You won ({win} chips).')
+        self.chips += win
+    def lose_bet(self):
+        print(f'You lost your bet ({self.bet} chips).')
+        self.chips -= self.bet
 
 class Dealer(Hand):
     def show_1_card(self):
