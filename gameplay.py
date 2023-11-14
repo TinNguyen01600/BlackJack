@@ -96,69 +96,32 @@ def payout(players_list, dealer):
         player_val = player.value
         
         if player_val > 21:   
-            print('Player busted.', end='')
+            print('Player busted.', end=' ')
             player.lose_bet()
         elif player.blackjack:  
             if dealer.blackjack:  print('Dealer and Player pushed. The bet is returned')
             else:
-                print('Player got blackjack.', end='')
+                print('Player got blackjack.', end=' ')
                 if player.bet % 2 == 0: profit = int(player.bet/2)
                 else:   profit = player.bet/2
                 player.win_bet(player.bet + profit)
         else:
             if dealer_val > 21:
-                print('Dealer busted.', end='')
+                print('Dealer busted.', end=' ')
                 player.win_bet(player.bet)
             elif dealer.blackjack:  
-                print('Dealer got blackjack.', end='')
+                print('Dealer got blackjack.', end=' ')
                 player.lose_bet()
             else:
                 if player_val > dealer_val:
-                    print('Player is closer to 21.', end='')
+                    print('Player is closer to 21.', end=' ')
                     player.win_bet(player.bet)
                 elif player_val == dealer_val:  print('Dealer and Player pushed. The bet is returned')
                 else:   
-                    print('Dealer is closer to 21.', end='')
+                    print('Dealer is closer to 21.', end=' ')
                     player.lose_bet()
         print(player)
 
 if __name__ == '__main__':
-    # Setting up deck, players and dealer
-    deck = set_up_deck()
-    players_list = set_up_players([])
-    dealer = classes.Dealer()
-    
-    # Placing players' bets and dealing cards
-    os.system('cls')
-    print('New round.')
-    for i in players_list:
-        print(f'Player {i.name} has {i.chips} chips.')
-    print()
-    set_up_bet(players_list)
-    dealing(players_list, deck, dealer)
-    
-    # Displaying players' and dealer's cards
-    print('Dealer\'s cards ', end='')
-    dealer.show_1_card()
-    for i in players_list:
-        print(f'Player {i.name}\'s cards ', end='')
-        i.show_all_cards()
-    
-    # Each player's turn and decision
-    for i in players_list:
-        print()
-        print(f'Player {i.name}\'s turn. Your cards ', end='')
-        player_turn(i, deck)
-    input('Press Enter to continue...')
-    
-    # Dealer's turn and reveal their cards
-    os.system('cls')
-    print('Dealer\'s turn.')
-    dealer_turn(dealer, deck)
-    input('Press Enter to continue...')
-    
-    # Determination of Winners, Paying and Collecting Bets
-    os.system('cls')
-    payout(players_list, dealer)
-    input('Press Enter to continue...')
+    pass
     

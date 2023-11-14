@@ -1,4 +1,5 @@
 import random
+import gameplay
 
 suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
 ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
@@ -34,6 +35,17 @@ class Hand:
         self._value = 0
         self._aces = 0
         self.blackjack = False
+    @staticmethod
+    def get_integer(text):
+        while True:
+            try:
+                result = int(input(text))
+            except:
+                print('Not a number. Try again')
+                continue         
+            else:
+                break
+        return result
     def add_card(self, new_card):
         self.cards.append(new_card)
     def show_all_cards(self):
@@ -62,17 +74,6 @@ class Player(Hand):
         super().__init__()
         self.name = input('Enter your name: ')
         self.chips = self.get_integer('Buy in: ')
-    @staticmethod
-    def get_integer(text):
-        while True:
-            try:
-                result = int(input(text))
-            except:
-                print('Not a number. Try again')
-                continue         
-            else:
-                break
-        return result
     def __str__(self):
         string = f'Player {self.name} has {self.chips} chips. '
         return string
