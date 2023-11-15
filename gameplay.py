@@ -37,7 +37,7 @@ def dealing(players_list, deck, dealer):
 
 def get_player_choice(p):
     possible_choices = ['Hit', 'Stand', 'Double Down']
-    if p.cards[0].rank == p.cards[1].rank:
+    if classes.values[p.cards[0].rank] == classes.values[p.cards[1].rank]:
         possible_choices.append('Split')
     for i in range(len(possible_choices)):
         print(f'{i+1}. {possible_choices[i]}')
@@ -58,18 +58,13 @@ def player_turn(player, deck):
     else:
         choice = get_player_choice(player)
         if choice == 1: # Hit
-            player.add_card(deck.deal_one())
-            if player.value > 21:
-                player.show_all_cards()
-                print(f'Player {player.name} busting')
-            else:
-                player_turn(player, deck)
+            player.hit(deck)
         elif choice == 2:   # Stand
             pass
         elif choice == 3:   # Double down
-            pass
+            player.double_down(deck)
         elif choice == 4:   # Split (only with same rank cards )
-            pass
+            player.split(player.cards, deck)
 
 def dealer_turn(dealer, deck):
     print('Dealer\'s cards ', end='')

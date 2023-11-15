@@ -20,9 +20,8 @@ class Deck:
             for rank in ranks:
                 c = Card(suit, rank)
                 self.deck.append(c)
-    def __str__(self):
-        for i in range(-10, 0, 1):
-            print(self.deck[i])
+    def __str__(self):  # print last 10 cards of the deck (for testing)
+        for i in range(-10, 0, 1):  print(self.deck[i])
         return ''
     def shuffle(self):
         random.shuffle(self.deck)
@@ -50,8 +49,7 @@ class Hand:
         self.cards.append(new_card)
     def show_all_cards(self):
         print('[ ', end='')
-        for i in self.cards:
-            print(i, end='| ')
+        for i in self.cards:    print(i, end='| ')
         print(']')
     @property
     def value(self):
@@ -64,8 +62,7 @@ class Hand:
         return num
     def calculate_value(self):
         val = 0
-        for i in self.cards:
-            val += values[i.rank]
+        for i in self.cards:    val += values[i.rank]
         if val > 21 and self.aces > 0:  val -= 10
         return val
 
@@ -82,6 +79,27 @@ class Player(Hand):
         if self.bet > self.chips:
             print('Not enough chips.')
             self.place_bet()
+    def hit(self, deck):
+        self.add_card(deck.deal_one())
+        if self.value > 21:
+            self.show_all_cards()
+            print(f'Player {self.name} busting')
+        else:
+            gameplay.player_turn(self, deck)
+    def double_down(self, deck):
+        print(f'You doubled your bet ({self.bet} chips -> {2*self.bet} chips).')
+        if 2*self.bet > self.chips:
+            print('You do not have enough chips')
+            gameplay.player_turn(deck)
+        else:
+            print('You must stand after receive 1 more card.')
+            self.bet *= 2
+            self.add_card(deck.deal_one())
+            self.show_all_cards()
+    def split(self, cards, deck):
+        hands = [[cards[0]], [cards[1]]]
+        hands[0].append(deck.deal_one())
+        hands[1].append(deck.deal_one())
     def win_bet(self, win):
         print(f'You won ({win} chips).')
         self.chips += win
